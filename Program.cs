@@ -1,12 +1,18 @@
+using Azure.Identity;
 using DataTrust.Data;
 using DataTrust.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var keyvaulturi = "https://trustkey.vault.azure.net/";
+
+builder.Configuration.AddAzureKeyVault(new Uri(keyvaulturi), new DefaultAzureCredential());
 
 builder.Services.AddAuthentication(options =>
 {
@@ -64,8 +70,8 @@ builder.Services.AddAuthentication(options =>
        }
     }
     */
-    options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+    options.ClientId = builder.Configuration["ClientID"];
+    options.ClientSecret = builder.Configuration["ClientSecret"];
     options.ResponseType = OpenIdConnectResponseType.Code;
     options.CallbackPath = "/signin-oidc-google";
     options.Scope.Add("openid");
@@ -83,7 +89,7 @@ builder.Services.AddAuthorization(options =>
 });
 
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration["DefaultConnection"]));
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
