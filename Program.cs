@@ -79,6 +79,7 @@ builder.Services.AddAuthentication(options =>
     options.Scope.Add("email");
     options.SaveTokens = true;
     options.GetClaimsFromUserInfoEndpoint = true;
+    options.SkipUnrecognizedRequests = true;
 });
 
 builder.Services.AddAuthorization(options =>
