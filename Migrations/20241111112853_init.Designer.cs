@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataTrust.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241111111238_init")]
+    [Migration("20241111112853_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
